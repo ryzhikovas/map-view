@@ -15,7 +15,7 @@ class TilesSource {
      */
     virtual std::optional<TileData> get(const TileId& id) const = 0;
     /**
-     * @return имя источника данных
+     * @return имя источника данных. Должно быть уникальным для каждого источника данных
      */
     virtual std::string name() const = 0;
 };

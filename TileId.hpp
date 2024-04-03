@@ -22,4 +22,6 @@ class ZoomLevel {
 struct TileId {
     ZoomLevel level;
     Point<size_t> pos;
+
+    TileId(ZoomLevel level, Point<size_t> pos) : level{level}, pos{pos} {}
 };

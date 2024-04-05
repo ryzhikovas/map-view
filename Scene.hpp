@@ -9,12 +9,13 @@ class Scene {
     explicit Scene();
     /**
      * @brief разрешает/запрещает передвижение
-     * @param moving TODO
+     * @param focusPos координаты мыши
+     * @param moving флаг разрешающий передвижение
      */
     void onMoving(Point<double> focusPos, bool moving);
     /**
      * @brief изменение масштаба
-     * @param focusPos местоположение курсора
+     * @param focusPos координаты мыши
      * @param delta смещение
      */
     void onZoom(Point<double> focusPos, double delta);
@@ -30,7 +31,7 @@ class Scene {
     void addTilesSource(std::shared_ptr<TilesSource> source);
     /**
      * @brief Управление отрисовкой
-     * @param render средство реализации отображения тайтлов
+     * @param render средство реализации отображения tile
      */
     void show(Render& render);
 

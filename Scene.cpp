@@ -10,7 +10,6 @@ void Scene::onMoving(Point<double> focusPos, bool moving) {
 }
 
 void Scene::onZoom(Point<double> focusPos, double delta) {
-    size_t z = zoom;
     if ((zoom <= 0) and delta < 0)
         return;
 
@@ -48,6 +47,7 @@ void Scene::addTilesSource(std::shared_ptr<TilesSource> source) {
 void Scene::show(Render& render) {
     render.clear();
 
+    // TODO добавить константу для 256
     auto drawTile = [this, &render] (Point<double> ptr) {
         Point<size_t> posTile{(size_t)floor(ptr.x / 256),(size_t)floor(ptr.y / 256)};
 
@@ -56,17 +56,18 @@ void Scene::show(Render& render) {
         Point<double> bottomRight{topLeft.x + 256, topLeft.y + 256};
 
         TileId tileId(zoom, posTile);
+        // TODO обернуть в try catch
         std::optional<TileData> tile = tilesSource[0]->get(tileId);
         if (tile.has_value()){
             render.draw(topLeft, bottomRight, tile.value());
         }
     };
 
-    Point<int> lowerRightPoint{(int)(render.getHeightWindow() + topLeftPoint.y),
-                               (int)(render.getWidthWindow() + topLeftPoint.x)};
+    Point<int> lowerRightPoint{(int)(render.getWidthWindow() + topLeftPoint.x + 256),
+                               (int)(render.getHeightWindow() + topLeftPoint.y + 256)};
 
-    for (auto i = topLeftPoint.x; i < lowerRightPoint.x + 256; i += 256) {
-        for (auto j = topLeftPoint.y; j < lowerRightPoint.y + 256; j += 256) {
+    for (auto i = topLeftPoint.x; i < lowerRightPoint.x; i += 256) {
+        for (auto j = topLeftPoint.y; j < lowerRightPoint.y; j += 256) {
             drawTile(Point<double>{i,j});
         }
     }

@@ -9,18 +9,19 @@ namespace sfml {
                           const TileData& tile) {
         const std::vector<char>& dataTile = tile.bytes();
         int j = 0;
-        // TODO заменить на vector
-        std::vector<sf::Uint8> pixels(256 * 256 * 4);
-        for (int i = 0; i < 256 * 256 * 4; i += 4, j += 3) {
+        unsigned size = MAP_SIZE * MAP_SIZE * 4;
+        std::vector<sf::Uint8> pixels(size);
+        for (unsigned i = 0; i < size; i += 4, j += 3) {
             std::copy(&dataTile[j], &dataTile[j + 3], &pixels[i]);
             pixels[i + 3] = 255;
         }
 
         // TODO создать кеш текстур
         sf::Texture texture;
-        texture.create(256,256);
+        texture.create(MAP_SIZE,MAP_SIZE);
         texture.update(pixels.data());
 
+        sf::Sprite sprite;
         sprite.setTexture(texture);
         sprite.setPosition((float)topLeft.x, (float)topLeft.y);
 

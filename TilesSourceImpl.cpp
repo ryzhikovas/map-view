@@ -18,7 +18,7 @@ std::optional<TileData> TilesSourceImpl::get(const TileId& id) const {
     path += std::to_string(id.pos.y) + "_";
     path += std::to_string(id.pos.x) + ".raw";
     std::ifstream file(path, std::ios::binary);
-    std::vector<char> buffer(255 * 255 * 3);
+    std::vector<char> buffer(MAP_SIZE * MAP_SIZE * 3);
     file.read(buffer.data(), buffer.size());
     return file.good() ? std::make_optional(buffer) : std::nullopt;
 }

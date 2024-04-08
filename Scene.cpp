@@ -47,13 +47,12 @@ void Scene::addTilesSource(std::shared_ptr<TilesSource> source) {
 void Scene::show(Render& render) {
     render.clear();
 
-    // TODO добавить константу для 256
     auto drawTile = [this, &render] (Point<double> ptr) {
-        Point<size_t> posTile{(size_t)floor(ptr.x / 256),(size_t)floor(ptr.y / 256)};
+        Point<size_t> posTile{(size_t)floor(ptr.x / MAP_SIZE),(size_t)floor(ptr.y / MAP_SIZE)};
 
-        Point<double> topLeft{((double)posTile.x * 256) - topLeftPoint.x,
-                              ((double)posTile.y * 256) - topLeftPoint.y};
-        Point<double> bottomRight{topLeft.x + 256, topLeft.y + 256};
+        Point<double> topLeft{((double)posTile.x * MAP_SIZE) - topLeftPoint.x,
+                              ((double)posTile.y * MAP_SIZE) - topLeftPoint.y};
+        Point<double> bottomRight{topLeft.x + MAP_SIZE, topLeft.y + MAP_SIZE};
 
         TileId tileId(zoom, posTile);
         // TODO обернуть в try catch
@@ -63,11 +62,11 @@ void Scene::show(Render& render) {
         }
     };
 
-    Point<int> lowerRightPoint{(int)(render.getWidthWindow() + topLeftPoint.x + 256),
-                               (int)(render.getHeightWindow() + topLeftPoint.y + 256)};
+    Point<int> lowerRightPoint{(int)(render.getWidthWindow() + topLeftPoint.x + MAP_SIZE),
+                               (int)(render.getHeightWindow() + topLeftPoint.y + MAP_SIZE)};
 
-    for (auto i = topLeftPoint.x; i < lowerRightPoint.x; i += 256) {
-        for (auto j = topLeftPoint.y; j < lowerRightPoint.y; j += 256) {
+    for (auto i = topLeftPoint.x; i < lowerRightPoint.x; i += MAP_SIZE) {
+        for (auto j = topLeftPoint.y; j < lowerRightPoint.y; j += MAP_SIZE) {
             drawTile(Point<double>{i,j});
         }
     }

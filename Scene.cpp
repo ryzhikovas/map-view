@@ -5,7 +5,7 @@ Scene::Scene() : zoom(ZoomLevel(0)), topLeftPoint(Point<double>{0,0}), isMoving{
 void Scene::onMoving(Point<double> focusPos, bool moving) {
     this->isMoving = moving;
     if (moving) {
-        lastPoint = Point<double>{focusPos.x,focusPos.y};
+        lastPoint = focusPos;
     }
 }
 
@@ -41,7 +41,7 @@ void Scene::onOffset(Point<double> newPoint) {
 }
 
 void Scene::addTilesSource(std::shared_ptr<TilesSource> source) {
-    tilesSource.push_back(source);
+    tilesSource.push_back(std::move(source));
 }
 
 void Scene::show(Render& render) {
@@ -56,6 +56,7 @@ void Scene::show(Render& render) {
 
         TileId tileId(zoom, posTile);
         // TODO обернуть в try catch
+        // TODO Проверка что id есть в кеше
         std::optional<TileData> tile = tilesSource[0]->get(tileId);
         if (tile.has_value()){
             render.draw(topLeft, bottomRight, tile.value());

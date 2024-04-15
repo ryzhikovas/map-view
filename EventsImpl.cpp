@@ -6,28 +6,33 @@ namespace sfml {
         : window{std::move(window)} {}
 
     bool EventsImpl::fetch() {
+        auto toPt = [] (auto pointLike) {
+            return Pt{double(pointLike.x), double(pointLike.y)};
+        };
+
+        Pt point;
         for (sf::Event event{}; window->pollEvent(event); /**/) {
             if (event.type == sf::Event::EventType::Closed) {
                 return false;
             } else if (event.type == sf::Event::EventType::MouseWheelScrolled) {
-                for (Events::WheelCallback i : mouseWheel) {
-                    Pt point{double(event.mouseWheelScroll.x), double(event.mouseWheelScroll.y)};
-                    i(point, event.mouseWheelScroll.delta);
+                for (const Events::WheelCallback& callback : mouseWheel) {
+                    point = toPt(event.mouseWheelScroll);
+                    callback(point, event.mouseWheelScroll.delta);
                 }
             } else if (event.type == sf::Event::EventType::MouseButtonReleased) {
-                for (Events::PosCallback i : mouseUp) {
-                    Pt point{double(event.mouseButton.x), double(event.mouseButton.y)};
-                    i(point);
+                for (const Events::PosCallback& callback : mouseUp) {
+                    point = toPt(event.mouseButton);
+                    callback(point);
                 }
             }else if (event.type == sf::Event::EventType::MouseButtonPressed) {
-                for (Events::PosCallback i : mouseDown) {
-                    Pt point{double(event.mouseButton.x), double(event.mouseButton.y)};
-                    i(point);
+                for (const Events::PosCallback& callback : mouseDown) {
+                    point = toPt(event.mouseButton);
+                    callback(point);
                 }
             }else if (event.type == sf::Event::EventType::MouseMoved) {
-                for (Events::PosCallback i : mouseMove) {
-                    Pt point{double(event.mouseMove.x), double(event.mouseMove.y)};
-                    i(point);
+                for (const Events::PosCallback& callback : mouseMove) {
+                    point = toPt(event.mouseMove);
+                    callback(point);
                 }
             }
         }

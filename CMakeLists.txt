@@ -32,6 +32,7 @@ add_executable(map-view
         EventsImpl.cpp
         RenderImpl.cpp
         Builder.cpp
+        TileCache.cpp
 )
 target_link_libraries(map-view PRIVATE sfml-graphics)
 

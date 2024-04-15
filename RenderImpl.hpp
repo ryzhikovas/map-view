@@ -23,6 +23,12 @@ namespace sfml {
         void clear() override;
         void display() override;
         /**
+         * @brief проверяет наличие текстуры tile в буфере
+         * @param id информация о tile
+         * @return возвращает true если текстура найдена
+         */
+        bool getTile(const TileData& id);
+        /**
          * @brief отрисовка tile на экране
          * @param topLeft левый верхний угол tile на экране
          * @param bottomRight правый нижний угол tile на экране
@@ -34,5 +40,6 @@ namespace sfml {
 
       private:
         std::shared_ptr<sf::RenderWindow> window;
+        std::vector<sf::Texture> spriteBuffer;
     };
 } // namespace sfml

@@ -22,17 +22,21 @@ namespace sfml {
         texture.update(pixels.data());
 
         sf::Sprite sprite;
-        sprite.setTexture(texture);
+        sprite.setTexture(texture, true);
         sprite.setPosition((float)topLeft.x, (float)topLeft.y);
 
         window->draw(sprite);
     }
 
-    unsigned RenderImpl::getWidthWindow(){
+    bool RenderImpl::getTile(const TileData& id) {
+        // TODO Поиск заданного спрайта (возможно создать отдельный класс)
+    }
+
+    unsigned RenderImpl::getWidthWindow() {
         return window->getSize().x;
     }
 
-    unsigned RenderImpl::getHeightWindow(){
+    unsigned RenderImpl::getHeightWindow() {
         return window->getSize().y;
     }
 

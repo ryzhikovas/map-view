@@ -24,22 +24,22 @@ int main(int argc, char* argv[]) {
 
         events->onMouseMove([&scene] (Point<double> pt) {
             scene.onOffset(pt);
-//            std::cout << pt.x << ", " << pt.y << std::endl;
+            // std::cout << pt.x << ", " << pt.y << std::endl;
         });
 
         events->onMouseDown([&scene] (Point<double> pt) {
             scene.onMoving(pt, true);
-//            std::cout << pt.x << ", " << pt.y << std::endl;
+            // std::cout << pt.x << ", " << pt.y << std::endl;
         });
 
         events->onMouseUp([&scene] (Point<double> pt) {
             scene.onMoving(pt, false);
-//            std::cout << pt.x << ", " << pt.y << std::endl;
+            // std::cout << pt.x << ", " << pt.y << std::endl;
         });
 
         events->onMouseWheel([&scene] (Point<double> pt, double step) {
             scene.onZoom(pt, step);
-//            std::cout << pt.x << ", " << pt.y << std::endl;
+            // std::cout << pt.x << ", " << pt.y << std::endl;
         });
 
         while (events->fetch()) {

@@ -1,6 +1,7 @@
 #include "Scene.hpp"
 
-Scene::Scene() : zoom(ZoomLevel(0)), topLeftPoint(Point<double>{0,0}), isMoving{false}{}
+Scene::Scene() : zoom(ZoomLevel(0)), topLeftPoint(Point<double>{0,0}),
+      isMoving{false}, cache(50){}
 
 void Scene::onMoving(Point<double> focusPos, bool moving) {
     this->isMoving = moving;
@@ -55,11 +56,18 @@ void Scene::show(Render& render) {
         Point<double> bottomRight{topLeft.x + MAP_SIZE, topLeft.y + MAP_SIZE};
 
         TileId tileId(zoom, posTile);
-        // TODO обернуть в try catch
         // TODO Проверка что id есть в кеше
-        std::optional<TileData> tile = tilesSource[0]->get(tileId);
-        if (tile.has_value()){
-            render.draw(topLeft, bottomRight, tile.value());
+        std::optional<Tile> cacheTile = cache.getTile(tileId);
+        if (cacheTile.has_value()) {
+            render.draw(topLeft, bottomRight, cacheTile.value());
+        }
+        else {
+            // TODO обернуть в try catch
+            std::optional<TileData> tileData = tilesSource[0]->get(tileId);
+            if (tileData.has_value()){
+                render.draw(topLeft, bottomRight,
+                            (cache.addTile(tileId, tileData.value())).value());
+            }
         }
     };
 

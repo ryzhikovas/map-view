@@ -1,6 +1,8 @@
 #pragma once
 #include "Point.hpp"
+#include "Tile.hpp"
 #include "TileData.hpp"
+#include "SFML/Graphics/Sprite.hpp"
 
 class Render {
   public:
@@ -11,5 +13,5 @@ class Render {
     virtual void display() = 0;
     virtual void draw(const Point<double>& topLeft,
                       const Point<double>& bottomRight,
-                      const TileData& tile) = 0;
+                      const Tile& tile) = 0;
 };

@@ -1,7 +1,9 @@
 #pragma once
 #include "constants.hpp"
 #include "Render.hpp"
+#include "TileCache.hpp"
 #include "TilesSourceImpl.hpp"
+#include "SFML/Graphics/Sprite.hpp"
 #include <memory>
 #include <cmath>
 
@@ -42,4 +44,5 @@ class Scene {
     Point<double> topLeftPoint;
     Point<double> lastPoint;
     bool isMoving;
+    TileCache cache;
 };

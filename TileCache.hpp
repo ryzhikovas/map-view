@@ -4,6 +4,7 @@
 #include <optional>
 #include <iterator>
 #include <list>
+#include <functional>
 #include <memory>
 #include "TileData.hpp"
 #include "TileId.hpp"
@@ -11,14 +12,18 @@
 #include "constants.hpp"
 
 class TileCache {
+private:
+    using CleanCallback = std::function<bool(const TileId& tileId)>;
+
 public:
-    explicit TileCache(size_t size) : size(size) {}
+    explicit TileCache() {}
 
     std::optional<Tile> getTile(const TileId& tileId);
 
     std::optional<Tile> addTile(const TileId& tileId, const TileData& tileData);
 
+    void clean(CleanCallback&& callback);
+
 private:
-    size_t size;
     std::list<Tile> tiles;
 };

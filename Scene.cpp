@@ -74,6 +74,16 @@ void Scene::show(Render& render) {
     Point<int> lowerRightPoint{(int)(render.getWidthWindow() + topLeftPoint.x + MAP_SIZE),
                                (int)(render.getHeightWindow() + topLeftPoint.y + MAP_SIZE)};
 
+    cache.clean([this, &lowerRightPoint] (const TileId& tileId) {
+        Point<double> posTile{(double)tileId.pos.x * MAP_SIZE,
+                              (double)tileId.pos.y * MAP_SIZE};
+
+        if (topLeftPoint - MAP_SIZE * 3 <= posTile and
+            lowerRightPoint.toDouble() + MAP_SIZE * 3 >= posTile)
+            return false;
+        return true;
+    });
+
     for (auto i = topLeftPoint.x; i < lowerRightPoint.x; i += MAP_SIZE) {
         for (auto j = topLeftPoint.y; j < lowerRightPoint.y; j += MAP_SIZE) {
             drawTile(Point<double>{i,j});

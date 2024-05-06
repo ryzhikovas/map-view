@@ -2,12 +2,14 @@
 
 Tile::Tile(const TileId& tileId, const TileData& tileData) : id(tileId) {
     const std::vector<char>& dataTile = tileData.bytes();
-    int j = 0;
-    unsigned size = MAP_SIZE * MAP_SIZE * 4;
+    const unsigned size = MAP_SIZE * MAP_SIZE * 4;
     std::vector<sf::Uint8> pixels(size);
-    for (unsigned i = 0; i < size; i += 4, j += 3) {
-        std::copy(&dataTile[j], &dataTile[j + 3], &pixels[i]);
-        pixels[i + 3] = 255;
+    auto pixel{pixels.begin()};
+    for (auto data{dataTile.begin()}; data != dataTile.end(); data += 3) {
+        std::copy(data, data + 3, pixel);
+        pixel += 3;
+        *pixel = 255;
+        ++pixel;
     }
 
     texture.create(MAP_SIZE, MAP_SIZE);

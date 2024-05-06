@@ -1,19 +1,13 @@
 #include "TileCache.hpp"
 
 std::optional<Tile> TileCache::getTile(const TileId& tileId) {
-    auto equal = [tileId](const TileId& id) {
-        if (id.level == tileId.level and id.pos.x == tileId.pos.x and
-            id.pos.y == tileId.pos.y)
-            return true;
-        return false;
-    };
 
-    for(auto tile{tiles.begin()}; tile !=tiles.end(); tile++ ) {
-        // TODO если в кеше могут хранится tile`ы разных источников надо проверять имя
-        if (equal((*tile).id)) {
-            tiles.splice(tiles.begin(), tiles, tile);
-            return std::make_optional((*tile));
-        }
+    // TODO если в кеше могут хранится tile`ы разных источников надо проверять имя
+    auto it = std::find_if(tiles.begin(), tiles.end(), [&](const Tile& tile) {
+        return tile.id == tileId;
+    });
+    if (it != std::end(tiles)) {
+        return std::make_optional(*it);
     }
     return std::nullopt;
 }
@@ -25,8 +19,11 @@ std::optional<Tile> TileCache::addTile(const TileId& tileId, const TileData& til
 
     tiles.emplace_front(tileId, tileData);
 
-    while (tiles.size() > size)
-        tiles.pop_back();
-
     return std::make_optional(tiles.front());
+}
+
+void TileCache::clean(CleanCallback&& callback){
+    tiles.remove_if([&] (Tile& tile){
+        return callback(tile.id);
+    });
 }

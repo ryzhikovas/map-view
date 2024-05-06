@@ -1,11 +1,11 @@
 #pragma once
 #include "constants.hpp"
+#include "Point.hpp"
 #include "Render.hpp"
 #include "TileCache.hpp"
 #include "TilesSourceImpl.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include <memory>
-#include <cmath>
 
 class Scene {
   public:

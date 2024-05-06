@@ -49,7 +49,7 @@ void Scene::show(Render& render) {
     render.clear();
 
     auto drawTile = [this, &render] (Point<double> ptr) {
-        Point<size_t> posTile{(size_t)floor(ptr.x / MAP_SIZE),(size_t)floor(ptr.y / MAP_SIZE)};
+        Point<size_t> posTile = (floor(ptr / (double)MAP_SIZE)).toSize_t();
 
         Point<double> topLeft{((double)posTile.x * MAP_SIZE) - topLeftPoint.x,
                               ((double)posTile.y * MAP_SIZE) - topLeftPoint.y};

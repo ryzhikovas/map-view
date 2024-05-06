@@ -24,4 +24,11 @@ struct TileId {
     Point<size_t> pos;
 
     TileId(ZoomLevel level, Point<size_t> pos) : level{level}, pos{pos} {}
+
+    bool operator== (const TileId& tileId) const{
+        if (level == tileId.level and
+            pos.x == tileId.pos.x and pos.y == tileId.pos.y)
+            return true;
+        return false;
+    }
 };

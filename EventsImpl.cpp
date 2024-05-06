@@ -10,29 +10,24 @@ namespace sfml {
             return Pt{double(pointLike.x), double(pointLike.y)};
         };
 
-        Pt point;
         for (sf::Event event{}; window->pollEvent(event); /**/) {
             if (event.type == sf::Event::EventType::Closed) {
                 return false;
             } else if (event.type == sf::Event::EventType::MouseWheelScrolled) {
                 for (const Events::WheelCallback& callback : mouseWheel) {
-                    point = toPt(event.mouseWheelScroll);
-                    callback(point, event.mouseWheelScroll.delta);
+                    callback(toPt(event.mouseWheelScroll), event.mouseWheelScroll.delta);
                 }
             } else if (event.type == sf::Event::EventType::MouseButtonReleased) {
                 for (const Events::PosCallback& callback : mouseUp) {
-                    point = toPt(event.mouseButton);
-                    callback(point);
+                    callback(toPt(event.mouseButton));
                 }
             }else if (event.type == sf::Event::EventType::MouseButtonPressed) {
                 for (const Events::PosCallback& callback : mouseDown) {
-                    point = toPt(event.mouseButton);
-                    callback(point);
+                    callback(toPt(event.mouseButton));
                 }
             }else if (event.type == sf::Event::EventType::MouseMoved) {
                 for (const Events::PosCallback& callback : mouseMove) {
-                    point = toPt(event.mouseMove);
-                    callback(point);
+                    callback(toPt(event.mouseMove));
                 }
             }
         }

@@ -1,3 +1,3 @@
 # pragma once
 
-const int MAP_SIZE = 256;
+const int TILE_SIZE = 256;

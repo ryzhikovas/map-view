@@ -49,11 +49,11 @@ void Scene::show(Render& render) {
     render.clear();
 
     auto drawTile = [this, &render] (Point<double> ptr) {
-        Point<size_t> posTile = (floor(ptr / (double)MAP_SIZE)).toSize_t();
+        Point<size_t> posTile = (floor(ptr / (double)TILE_SIZE)).convert<size_t>();
 
-        Point<double> topLeft{((double)posTile.x * MAP_SIZE) - topLeftPoint.x,
-                              ((double)posTile.y * MAP_SIZE) - topLeftPoint.y};
-        Point<double> bottomRight{topLeft.x + MAP_SIZE, topLeft.y + MAP_SIZE};
+        Point<double> topLeft{((double)posTile.x * TILE_SIZE) - topLeftPoint.x,
+                              ((double)posTile.y * TILE_SIZE) - topLeftPoint.y};
+        Point<double> bottomRight{topLeft.x + TILE_SIZE, topLeft.y + TILE_SIZE};
 
         TileId tileId(zoom, posTile);
         // TODO Проверка что id есть в кеше
@@ -72,21 +72,21 @@ void Scene::show(Render& render) {
         }
     };
 
-    Point<int> lowerRightPoint{(int)(render.getWidthWindow() + topLeftPoint.x + MAP_SIZE),
-                               (int)(render.getHeightWindow() + topLeftPoint.y + MAP_SIZE)};
+    Point<double> lowerRightPoint{(render.getWidthWindow() + topLeftPoint.x + TILE_SIZE),
+                               (render.getHeightWindow() + topLeftPoint.y + TILE_SIZE)};
 
     cache.clean([this, &lowerRightPoint] (const TileId& tileId) {
-        Point<double> posTile{(double)tileId.pos.x * MAP_SIZE,
-                              (double)tileId.pos.y * MAP_SIZE};
+        Point<double> posTile{(double)tileId.pos.x * TILE_SIZE,
+                              (double)tileId.pos.y * TILE_SIZE};
 
-        if (topLeftPoint - MAP_SIZE * 3 <= posTile and
-            lowerRightPoint.toDouble() + MAP_SIZE * 3 >= posTile)
-            return false;
-        return true;
+        if (!(topLeftPoint - TILE_SIZE <= posTile and
+            lowerRightPoint + TILE_SIZE >= posTile) or tileId.level != zoom)
+            return true;
+        return false;
     });
 
-    for (auto i = topLeftPoint.x; i < lowerRightPoint.x; i += MAP_SIZE) {
-        for (auto j = topLeftPoint.y; j < lowerRightPoint.y; j += MAP_SIZE) {
+    for (auto i = topLeftPoint.x; i < lowerRightPoint.x; i += TILE_SIZE) {
+        for (auto j = topLeftPoint.y; j < lowerRightPoint.y; j += TILE_SIZE) {
             drawTile(Point<double>{i,j});
         }
     }

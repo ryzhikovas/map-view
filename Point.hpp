@@ -5,19 +5,19 @@ template <class T> struct Point {
     T x;
     T y;
 
-    Point<T> operator+ (Point<T> p) const{
+    Point<T> operator+ (const Point<T>& p) const{
         return Point<T>{x + p.x, y + p.y};
     }
 
-    Point operator- (Point<T> p) const{
+    Point<T> operator- (const Point<T>& p) const{
         return Point<T>{x - p.x, y - p.y};
     }
 
-    Point<T> operator* (Point<T> p) const{
+    Point<T> operator* (const Point<T>& p) const{
         return Point<T>{x * p.x, y * p.y};
     }
 
-    Point<T> operator/ (Point<T> p) const{
+    Point<T> operator/ (const Point<T>& p) const{
         return Point<T>{x / p.x, y / p.y};
     }
 
@@ -37,36 +37,77 @@ template <class T> struct Point {
         return Point<T>{x / value, y / value};
     }
 
-    bool operator< (const Point<T> p) const{
+    void operator+= (const Point<T>& p) {
+        *this = *this + p;
+    }
+
+    void operator-= (const Point<T>& p) {
+        *this = *this - p;
+    }
+
+    void operator*= (const Point<T>& p) {
+        *this = *this * p;
+    }
+
+    void operator/= (const Point<T>& p) {
+        *this = *this / p;
+    }
+
+    void operator+= (const T& value) {
+        *this = *this + value;
+    }
+
+    void operator-= (const T& value) {
+        *this = *this - value;
+    }
+
+    void operator*= (const T& value) {
+        *this = *this * value;
+    }
+
+    void operator/= (const T& value) {
+        *this = *this / value;
+    }
+
+    bool operator== (const Point<T>& p) const{
+        if (x == p.x and y == p.y)
+            return true;
+        return false;
+    }
+
+    bool operator!= (const Point<T>& p) const{
+        if (!(*this == p))
+            return true;
+        return false;
+    }
+
+    bool operator< (const Point<T>& p) const{
         if (x < p.x and y < p.y)
             return true;
         return false;
     }
 
-    bool operator> (const Point<T> p) const{
-        if (x > p.x and y > p.y)
+    bool operator<= (const Point<T>& p) const{
+        if (*this < p or *this == p)
             return true;
         return false;
     }
 
-    bool operator<= (const Point<T> p) const{
-        if (x <= p.x and y <= p.y)
+    bool operator> (const Point<T>& p) const{
+        if (!(*this <= p))
             return true;
         return false;
     }
 
-    bool operator>= (const Point<T> p) const{
-        if (x >= p.x and y >= p.y)
+    bool operator>= (const Point<T>& p) const{
+        if (*this > p or *this == p )
             return true;
         return false;
     }
 
-    [[nodiscard]] Point<size_t> toSize_t() const{
-        return Point<size_t> {(size_t)x, (size_t)y};;
-    }
-
-    [[nodiscard]] Point<double> toDouble() const{
-        return Point<double> {(double)x, (double)y};;
+    template <typename newT>
+    Point<newT> convert (){
+        return Point<newT>{(newT)x, (newT) y};
     }
 };
 

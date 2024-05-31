@@ -4,6 +4,8 @@
 #include <optional>
 #include <iterator>
 #include <list>
+#include <algorithm>
+#include <execution>
 #include <functional>
 #include <memory>
 #include "TileData.hpp"

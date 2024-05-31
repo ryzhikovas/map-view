@@ -14,9 +14,8 @@ Tile::Tile(const TileId& tileId, const TileData& tileData) : id(tileId) {
 
     texture.create(MAP_SIZE, MAP_SIZE);
     texture.update(pixels.data());
-    sprite.setTexture(texture, true);
 }
 
-const sf::Sprite& Tile::getSprite() const{
-    return sprite;
+void Tile::getSprite(sf::Sprite& sprite) const{
+    sprite.setTexture(texture, true);
 }

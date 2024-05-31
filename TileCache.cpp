@@ -3,7 +3,7 @@
 std::optional<Tile> TileCache::getTile(const TileId& tileId) {
 
     // TODO если в кеше могут хранится tile`ы разных источников надо проверять имя
-    auto it = std::find_if(tiles.begin(), tiles.end(), [&](const Tile& tile) {
+    auto it = std::find_if(std::execution::seq,tiles.begin(), tiles.end(), [&](const Tile& tile) {
         return tile.id == tileId;
     });
     if (it != std::end(tiles)) {
@@ -17,13 +17,13 @@ std::optional<Tile> TileCache::addTile(const TileId& tileId, const TileData& til
     if (tile != std::nullopt)
         return tile;
 
-    tiles.emplace_front(tileId, tileData);
+    tiles.emplace_back(tileId, tileData);
 
-    return std::make_optional(tiles.front());
+    return std::make_optional(tiles.back());
 }
 
 void TileCache::clean(CleanCallback&& callback){
-    tiles.remove_if([&] (Tile& tile){
-        return callback(tile.id);
-    });
+    tiles.erase(std::remove_if(begin(tiles), end(tiles), [&] (const Tile& tile){
+                    return callback(tile.id);
+                }), end(tiles));
 }

@@ -10,9 +10,9 @@ public:
   TileId id;
   Tile(const TileId& tileId, const TileData& tileData);
 
-  const sf::Sprite& getSprite() const;
+  void getSprite(sf::Sprite& sprite) const;
 
 private:
     sf::Texture texture;
-    sf::Sprite sprite;
+    //sf::Sprite sprite;
 };

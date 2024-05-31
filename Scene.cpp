@@ -30,6 +30,21 @@ void Scene::onZoom(Point<double> focusPos, double delta) {
     topLeftPoint.y += offset.y;
 }
 
+void Scene::focusOnCoord(Render& render, Location latlon){
+    topLeftPoint = coord::to_pixel(latlon) * this->getSizeMap();
+
+    // перемещение в точку
+    topLeftPoint.x -= (double)render.getWidthWindow() / 2;
+    topLeftPoint.y -= (double)render.getHeightWindow() / 2;
+    show(render);
+}
+
+Location Scene::getCoord(Point<double> coord){
+    coord += topLeftPoint;
+    coord /= this->getSizeMap();
+    return coord::to_LatLon(coord);
+}
+
 void Scene::onOffset(Point<double> newPoint) {
     if (isMoving) {
         double offset_x = lastPoint.x - newPoint.x;
@@ -39,6 +54,10 @@ void Scene::onOffset(Point<double> newPoint) {
         topLeftPoint.x += offset_x;
         topLeftPoint.y += offset_y;
     }
+}
+
+[[maybe_unused]] double Scene::getSizeMap(){
+    return sqrt(pow(4, zoom)) * TILE_SIZE;
 }
 
 void Scene::addTilesSource(std::shared_ptr<TilesSource> source) {

@@ -31,7 +31,7 @@ void Scene::onZoom(Point<double> focusPos, double delta) {
 }
 
 void Scene::focusOnCoord(Render& render, Location latlon){
-    topLeftPoint = coord::to_pixel(latlon) * this->getSizeMap();
+    topLeftPoint = latlon.toRelativeCoord() * this->getSizeMap();
 
     // перемещение в точку
     topLeftPoint.x -= (double)render.getWidthWindow() / 2;

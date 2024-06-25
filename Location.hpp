@@ -4,22 +4,45 @@
 #include "Point.hpp"
 #include "constants.hpp"
 
-# define M_PI           3.14159265358979323846  /* pi */
+#include <iostream>
 
-struct Location {
+class Location{
+  public:
+    /**
+     * @brief создания объекта Location
+     * @param lon широта в градусах
+     * @param lat долгота в градусах
+     */
+    Location(double lon, double lat);
+    /**
+     * @brief перевод входных координат
+     * в географические координаты,
+     * создания объекта Location
+     * @param pt относительные координаты
+     */
+    explicit Location(Point<double> pt);
+    /**
+     * @brief перевод географических координат
+     * в относительные
+     * @return относительные координаты
+     */
+    Point<double> toRelativeCoord() const;
+
+  private:
+    /**
+     * @brief перевод градусов в радианы
+     * @param deg значение в градусах
+     * @return значение в радианах
+     */
+    static double deg2rad(double deg);
+    /**
+     * @brief перевод радиан в градусы
+     * @param rad значение в радианах
+     * @return значение в градусах
+     */
+    static double rad2deg(double rad);
+
+  private:
     double lon;
     double lat;
 };
-
-namespace coord {
-    // градусы в радианы
-    double deg2rad(double deg);
-
-    // радианы в градусы
-    double rad2deg(double rad);
-
-    //
-    Location to_LatLon(Point<double> pt);
-
-    Point<double> to_pixel(Location latlon);
-}

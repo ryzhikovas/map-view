@@ -1,6 +1,6 @@
 #include "Scene.hpp"
 
-Scene::Scene() : zoom(ZoomLevel(0)), topLeftPoint(Point<double>{0,0}),
+Scene::Scene(std::shared_ptr<Events> e) : events(std::move(e)), zoom(ZoomLevel(0)), topLeftPoint(Point<double>{0,0}),
       isMoving{false} {}
 
 void Scene::onMoving(Point<double> focusPos, bool moving) {
@@ -39,10 +39,11 @@ void Scene::focusOnCoord(Render& render, Location latlon){
     show(render);
 }
 
-Location Scene::getCoord(Point<double> coord){
+void Scene::getCoord(Point<double> coord){
     coord += topLeftPoint;
     coord /= this->getSizeMap();
-    return coord::to_LatLon(coord);
+    dynamic_cast<sfml::EventsImpl*>
+        (events.get())->changePtr(Location(coord));
 }
 
 void Scene::onOffset(Point<double> newPoint) {
@@ -112,3 +113,4 @@ void Scene::show(Render& render) {
 
     render.display();
 }
+

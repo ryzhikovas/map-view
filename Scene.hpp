@@ -1,6 +1,7 @@
 #pragma once
 #include "Location.hpp"
 #include "Point.hpp"
+#include "EventsImpl.hpp"
 #include "Render.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "TileCache.hpp"
@@ -10,7 +11,7 @@
 
 class Scene {
   public:
-    explicit Scene();
+    explicit Scene(std::shared_ptr<Events> e);
     /**
      * @brief разрешает/запрещает передвижение
      * @param focusPos координаты мыши
@@ -25,9 +26,21 @@ class Scene {
      */
     void onZoom(Point<double> focusPos, double delta);
 
+    /**
+     * @brief фокусировка сцены по входным координатам и
+     * перерисовка сцены в соответствии с новым положением
+     * @param render средство реализации отображения tile
+     * @param latlon географические координаты
+     */
     void focusOnCoord(Render& render, Location latlon);
 
-    Location getCoord(Point<double> coord);
+    /**
+     * @brief пересчёт входных координат в географические координаты
+     * и отправление сообщения в Events об изменении координат
+     * @param coord координаты положения мыши
+     * в экранной системе координат
+     */
+    void getCoord(Point<double> coord);
 
     /**
      * @brief Изменение положения на экрана
@@ -54,6 +67,7 @@ class Scene {
     void show(Render& render);
 
   private:
+    std::shared_ptr<Events> events;
     std::vector<std::shared_ptr<TilesSource>> tilesSource;
     ZoomLevel zoom;
     Point<double> topLeftPoint;

@@ -16,14 +16,16 @@ int main(int argc, char* argv[]) {
     try {
         auto tiles = std::dynamic_pointer_cast<TilesSource>(
             std::make_shared<TilesSourceImpl>(argv[1]));
-        Scene scene;
-        scene.addTilesSource(tiles);
+
         sfml::Builder sfmlBuilder;
         auto events = sfmlBuilder.events();
         auto render = sfmlBuilder.render();
+        Scene scene(events);
+        scene.addTilesSource(tiles);
 
         events->onMouseMove([&scene] (Point<double> pt) {
             scene.onOffset(pt);
+            scene.getCoord(pt);
         });
 
         events->onMouseDown([&scene] (Point<double> pt) {
@@ -36,10 +38,6 @@ int main(int argc, char* argv[]) {
 
         events->onMouseWheel([&scene] (Point<double> pt, double step) {
             scene.onZoom(pt, step);
-        });
-
-        events->onMouseDown([&scene] (Point<double> pt) {
-            Location loc = scene.getCoord(pt);
         });
 
         while (events->fetch()) {

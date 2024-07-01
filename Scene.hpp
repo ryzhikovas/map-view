@@ -1,5 +1,6 @@
 #pragma once
-#include "Location.hpp"
+#include "EventsImpl.hpp"
+#include "Geography.hpp"
 #include "Point.hpp"
 #include "EventsImpl.hpp"
 #include "Render.hpp"

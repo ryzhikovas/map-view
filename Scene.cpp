@@ -44,6 +44,8 @@ void Scene::getCoord(Point<double> coord){
     coord /= this->getSizeMap();
     dynamic_cast<sfml::EventsImpl*>
         (events.get())->changePtr(Location(coord));
+    events->repositioning(Geography::toLocationCoord(coord));
+}
 }
 
 void Scene::onOffset(Point<double> newPoint) {

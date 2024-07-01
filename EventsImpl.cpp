@@ -50,6 +50,14 @@ namespace sfml {
         mouseWheel.push_back(std::move(callback));
     }
 
-    void EventsImpl::changePtr(Location latlon) {
+    void EventsImpl::onChangeLocation(ChangeLocation&& callback) {
+        changeLocation.push_back(std::move(callback));
+    }
+
+    void EventsImpl::repositioning(const Location& latlon) {
+        for(const ChangeLocation& callback : changeLocation) {
+            callback(latlon);
+        }
+    }
     }
 } // namespace sfml

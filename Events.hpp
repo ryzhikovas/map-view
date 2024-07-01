@@ -1,4 +1,5 @@
 #pragma once
+#include "Location.hpp"
 #include "Point.hpp"
 #include <functional>
 
@@ -7,6 +8,7 @@ class Events {
     using Pt = Point<double>;
     using PosCallback = std::function<void(const Pt&)>;
     using WheelCallback = std::function<void(const Pt&, double step)>;
+    using ChangeLocation = std::function<void(const Location& loc)>;
 
   public:
     virtual ~Events() = default;
@@ -35,4 +37,14 @@ class Events {
      * @param callback ссылка на std::function выполняемая при событии MouseWheel
      */
     virtual void onMouseWheel(WheelCallback&& callback) = 0;
+    /**
+     * @bref Вызывает обработку событий при изменении локации
+     * @param latlon географические координаты
+     */
+    virtual void repositioning(const Location& latlon) = 0;
+    /**
+     * @bref Связывает функции с событием изменения локации
+     * @param callback ссылка на std::function выполняемая при событии изменении местоположения
+     */
+    virtual void onChangeLocation(ChangeLocation&& callback) = 0;
 };

@@ -44,6 +44,13 @@ class Scene {
     void getCoord(Point<double> coord);
 
     /**
+     * @brief изменение размена сцены
+     * @param width новая ширина сцены
+     * @param height новая длинна сцены
+     */
+    void resizingScene(unsigned width, unsigned height);
+
+    /**
      * @brief Изменение положения на экрана
      * @param newPoint изменение координат
      */

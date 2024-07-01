@@ -16,6 +16,7 @@ namespace sfml {
         void onMouseWheel(WheelCallback&& callback) override;
         void onChangeLocation(ChangeLocation&& callback) override;
         void repositioning(const Location& latlon) override;
+        void onResizingWindow(ResizingWindow&& callback) override;
       private:
         std::shared_ptr<sf::RenderWindow> window;
         std::list<Events::PosCallback> mouseMove;
@@ -23,5 +24,6 @@ namespace sfml {
         std::list<Events::PosCallback> mouseUp;
         std::list<Events::WheelCallback> mouseWheel;
         std::list<ChangeLocation> changeLocation;
+        std::list<ResizingWindow> resizingWindow;
     };
 } // namespace sfml

@@ -46,6 +46,10 @@ void Scene::getCoord(Point<double> coord){
         (events.get())->changePtr(Location(coord));
     events->repositioning(Geography::toLocationCoord(coord));
 }
+
+void Scene::resizingScene(unsigned width, unsigned height) {
+    bottomRightPoint.x = topLeftPoint.x + width;
+    bottomRightPoint.y = topLeftPoint.y + height;
 }
 
 void Scene::onOffset(Point<double> newPoint) {

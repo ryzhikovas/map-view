@@ -9,6 +9,7 @@ class Events {
     using PosCallback = std::function<void(const Pt&)>;
     using WheelCallback = std::function<void(const Pt&, double step)>;
     using ChangeLocation = std::function<void(const Location& loc)>;
+    using ResizingWindow = std::function<void(unsigned width, unsigned height)>;
 
   public:
     virtual ~Events() = default;
@@ -47,4 +48,9 @@ class Events {
      * @param callback ссылка на std::function выполняемая при событии изменении местоположения
      */
     virtual void onChangeLocation(ChangeLocation&& callback) = 0;
+    /**
+     * @brief Связывает функции с событием изменения размера окна
+     * @param callback ссылка на std::function выполняемая при событии изменения размера окна
+     */
+    virtual void onResizingWindow(ResizingWindow&& callback) = 0;
 };

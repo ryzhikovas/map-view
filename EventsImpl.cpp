@@ -29,6 +29,12 @@ namespace sfml {
                 for (const Events::PosCallback& callback : mouseMove) {
                     callback(toPt(event.mouseMove));
                 }
+            }else if (event.type == sf::Event::EventType::Resized) {
+                for (const Events::ResizingWindow& callback : resizingWindow) {
+                    callback(event.size.width, event.size.height);
+                    window->setView(sf::View(sf::FloatRect(0.f, 0.f,
+                                      event.size.width, event.size.height)));
+                }
             }
         }
         return true;
@@ -59,5 +65,8 @@ namespace sfml {
             callback(latlon);
         }
     }
+
+    void EventsImpl::onResizingWindow(ResizingWindow&& callback) {
+        resizingWindow.push_back(std::move(callback));
     }
 } // namespace sfml

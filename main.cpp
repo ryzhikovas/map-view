@@ -40,6 +40,10 @@ int main(int argc, char* argv[]) {
             scene.onZoom(pt, step);
         });
 
+        events->onResizingWindow([&scene] (unsigned width, unsigned height) {
+            scene.resizingScene(width, height);
+        });
+
         while (events->fetch()) {
             scene.show(*render);
         }

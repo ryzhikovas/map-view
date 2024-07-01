@@ -26,17 +26,21 @@ void Scene::onZoom(Point<double> focusPos, double delta) {
     Point<double> offset = {(newFocusPos.x - focusPos.x),
                             (newFocusPos.y - focusPos.y)};
     topLeftPoint = scalingCoordinates(topLeftPoint);
-    topLeftPoint.x += offset.x;
-    topLeftPoint.y += offset.y;
+    topLeftPoint += offset;
+    bottomRightPoint = scalingCoordinates(bottomRightPoint);
+    bottomRightPoint += offset;
 }
 
-void Scene::focusOnCoord(Render& render, Location latlon){
-    topLeftPoint = latlon.toRelativeCoord() * this->getSizeMap();
+void Scene::focusOnCoord(Location latlon){
+    double width = bottomRightPoint.x - topLeftPoint.x;
+    double height = bottomRightPoint.y - topLeftPoint.y;
+    topLeftPoint = Geography::toRelativeCoord(latlon) * this->getSizeMap();
 
     // перемещение в точку
-    topLeftPoint.x -= (double)render.getWidthWindow() / 2;
-    topLeftPoint.y -= (double)render.getHeightWindow() / 2;
-    show(render);
+    topLeftPoint.x -= width / 2;
+    topLeftPoint.y -= height / 2;
+    bottomRightPoint.x = topLeftPoint.x + width;
+    bottomRightPoint.y = topLeftPoint.y + height;
 }
 
 void Scene::getCoord(Point<double> coord){
@@ -54,12 +58,13 @@ void Scene::resizingScene(unsigned width, unsigned height) {
 
 void Scene::onOffset(Point<double> newPoint) {
     if (isMoving) {
-        double offset_x = lastPoint.x - newPoint.x;
-        double offset_y = lastPoint.y - newPoint.y;
-        lastPoint.x = newPoint.x;
-        lastPoint.y = newPoint.y;
-        topLeftPoint.x += offset_x;
-        topLeftPoint.y += offset_y;
+        Point<double> offset {lastPoint.x - newPoint.x,
+                              lastPoint.y - newPoint.y};
+        lastPoint = newPoint;
+        topLeftPoint += offset;
+        bottomRightPoint += offset;
+
+        emitGeolocation(newPoint);
     }
 }
 
@@ -98,21 +103,20 @@ void Scene::show(Render& render) {
         }
     };
 
-    Point<double> lowerRightPoint{(render.getWidthWindow() + topLeftPoint.x + TILE_SIZE),
-                               (render.getHeightWindow() + topLeftPoint.y + TILE_SIZE)};
+    Point<double> lowerRightBorder{bottomRightPoint + TILE_SIZE};
 
-    cache.clean([this, &lowerRightPoint] (const TileId& tileId) {
+    cache.clean([this, &lowerRightBorder] (const TileId& tileId) {
         Point<double> posTile{(double)tileId.pos.x * TILE_SIZE,
                               (double)tileId.pos.y * TILE_SIZE};
 
         if (!(topLeftPoint - TILE_SIZE <= posTile and
-            lowerRightPoint + TILE_SIZE >= posTile) or tileId.level != zoom)
+              lowerRightBorder + TILE_SIZE >= posTile) or tileId.level != zoom)
             return true;
         return false;
     });
 
-    for (auto i = topLeftPoint.x; i < lowerRightPoint.x; i += TILE_SIZE) {
-        for (auto j = topLeftPoint.y; j < lowerRightPoint.y; j += TILE_SIZE) {
+    for (auto i = topLeftPoint.x; i < lowerRightBorder.x; i += TILE_SIZE) {
+        for (auto j = topLeftPoint.y; j < lowerRightBorder.y; j += TILE_SIZE) {
             drawTile(Point<double>{i,j});
         }
     }

@@ -33,7 +33,7 @@ class Scene {
      * @param render средство реализации отображения tile
      * @param latlon географические координаты
      */
-    void focusOnCoord(Render& render, Location latlon);
+    void focusOnCoord(Location latlon);
 
     /**
      * @brief пересчёт входных координат в географические координаты
@@ -81,5 +81,6 @@ class Scene {
     Point<double> topLeftPoint;
     Point<double> lastPoint;
     bool isMoving;
+    Point<double> bottomRightPoint{WINDOW_WIDTH,WINDOW_HEIGHT};
     TileCache cache;
 };

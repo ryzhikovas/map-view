@@ -13,14 +13,6 @@ namespace sfml {
         window->draw(sprite);
     }
 
-    unsigned RenderImpl::getWidthWindow() {
-        return window->getSize().x;
-    }
-
-    unsigned RenderImpl::getHeightWindow() {
-        return window->getSize().y;
-    }
-
     void RenderImpl::clear() {
         window->clear();
     }

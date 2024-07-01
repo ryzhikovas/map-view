@@ -25,7 +25,6 @@ int main(int argc, char* argv[]) {
 
         events->onMouseMove([&scene] (Point<double> pt) {
             scene.onOffset(pt);
-            scene.getCoord(pt);
         });
 
         events->onMouseDown([&scene] (Point<double> pt) {

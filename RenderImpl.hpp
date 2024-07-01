@@ -10,14 +10,6 @@ namespace sfml {
     class RenderImpl : public Render {
       public:
         RenderImpl(std::shared_ptr<sf::RenderWindow> window);
-        /**
-         * @return возвращает ширину экрана
-         */
-        unsigned getWidthWindow() override;
-        /**
-         * @return возвращает длину экрана
-         */
-        unsigned getHeightWindow() override;
         void clear() override;
         void display() override;
         /**

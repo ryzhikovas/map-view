@@ -1,7 +1,6 @@
 #include "Scene.hpp"
 
-Scene::Scene(std::shared_ptr<Events> e) : events(std::move(e)), zoom(ZoomLevel(0)), topLeftPoint(Point<double>{0,0}),
-      isMoving{false} {}
+Scene::Scene(std::shared_ptr<Events> e) : events(std::move(e)) {}
 
 void Scene::onMoving(Point<double> focusPos, bool moving) {
     this->isMoving = moving;
@@ -43,11 +42,9 @@ void Scene::focusOnCoord(Location latlon){
     bottomRightPoint.y = topLeftPoint.y + height;
 }
 
-void Scene::getCoord(Point<double> coord){
+void Scene::emitGeolocation(Point<double> coord) const{
     coord += topLeftPoint;
     coord /= this->getSizeMap();
-    dynamic_cast<sfml::EventsImpl*>
-        (events.get())->changePtr(Location(coord));
     events->repositioning(Geography::toLocationCoord(coord));
 }
 
@@ -68,7 +65,7 @@ void Scene::onOffset(Point<double> newPoint) {
     }
 }
 
-[[maybe_unused]] double Scene::getSizeMap(){
+[[maybe_unused]] double Scene::getSizeMap() const{
     return sqrt(pow(4, zoom)) * TILE_SIZE;
 }
 
@@ -82,9 +79,8 @@ void Scene::show(Render& render) {
     auto drawTile = [this, &render] (Point<double> ptr) {
         Point<size_t> posTile = (floor(ptr / (double)TILE_SIZE)).convert<size_t>();
 
-        Point<double> topLeft{((double)posTile.x * TILE_SIZE) - topLeftPoint.x,
-                              ((double)posTile.y * TILE_SIZE) - topLeftPoint.y};
-        Point<double> bottomRight{topLeft.x + TILE_SIZE, topLeft.y + TILE_SIZE};
+        Point<double> topLeft{(posTile.convert<double>() * TILE_SIZE) - topLeftPoint};
+        Point<double> bottomRight{topLeft + TILE_SIZE};
 
         TileId tileId(zoom, posTile);
         // TODO Проверка что id есть в кеше

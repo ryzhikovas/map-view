@@ -25,7 +25,6 @@ int main(int argc, char* argv[]) {
 
         events->onMouseMove([&scene] (Point<double> pt) {
             scene.onOffset(pt);
-            scene.getCoord(pt);
         });
 
         events->onMouseDown([&scene] (Point<double> pt) {
@@ -41,7 +40,7 @@ int main(int argc, char* argv[]) {
         });
 
         events->onResizingWindow([&scene] (unsigned width, unsigned height) {
-            scene.resizingScene(width, height);
+            scene.resizeScene(width, height);
         });
 
         while (events->fetch()) {

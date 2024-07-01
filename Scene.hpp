@@ -2,7 +2,6 @@
 #include "EventsImpl.hpp"
 #include "Geography.hpp"
 #include "Point.hpp"
-#include "EventsImpl.hpp"
 #include "Render.hpp"
 #include "constants.hpp"
 #include "SFML/Graphics/Sprite.hpp"
@@ -31,8 +30,9 @@ class Scene {
     /**
      * @brief фокусировка сцены по входным координатам и
      * перерисовка сцены в соответствии с новым положением
-     * @param render средство реализации отображения tile
      * @param latlon географические координаты
+     * @param pt координаты положения мыши
+     * в экранной системе координат
      */
     void focusOnCoord(Location latlon);
 
@@ -42,14 +42,14 @@ class Scene {
      * @param coord координаты положения мыши
      * в экранной системе координат
      */
-    void getCoord(Point<double> coord);
+    void emitGeolocation(Point<double> coord) const;
 
     /**
      * @brief изменение размена сцены
      * @param width новая ширина сцены
      * @param height новая длинна сцены
      */
-    void resizingScene(unsigned width, unsigned height);
+    void resizeScene(unsigned width, unsigned height);
 
     /**
      * @brief Изменение положения на экрана
@@ -61,10 +61,10 @@ class Scene {
      * @brief Возвращает размер карты
      * @return размер карты в пикселях с учётом текущего приближения
      */
-    [[maybe_unused]] double getSizeMap();
+    [[maybe_unused]] double getSizeMap() const;
 
     /**
-     * @brief Добавляет источник данных тайтлов
+     * @brief Добавляет источник данных Tile
      * @param source источник данных
      */
     void addTilesSource(std::shared_ptr<TilesSource> source);
@@ -78,10 +78,10 @@ class Scene {
   private:
     std::shared_ptr<Events> events;
     std::vector<std::shared_ptr<TilesSource>> tilesSource;
-    ZoomLevel zoom;
-    Point<double> topLeftPoint;
-    Point<double> lastPoint;
-    bool isMoving;
+    ZoomLevel zoom{0};
+    Point<double> topLeftPoint{0,0};
     Point<double> bottomRightPoint{WINDOW_WIDTH,WINDOW_HEIGHT};
+    Point<double> lastPoint{0,0};
+    bool isMoving = false;
     TileCache cache;
 };

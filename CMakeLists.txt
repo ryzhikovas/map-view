@@ -34,7 +34,8 @@ add_executable(map-view
         Builder.cpp
         TileCache.cpp
         Tile.cpp
-        Location.cpp
+        Geography.cpp
+        Geography.hpp
         Location.hpp
 )
 target_link_libraries(map-view PRIVATE sfml-graphics)

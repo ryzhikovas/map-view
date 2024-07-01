@@ -4,6 +4,7 @@
 #include "Point.hpp"
 #include "EventsImpl.hpp"
 #include "Render.hpp"
+#include "constants.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "TileCache.hpp"
 #include "TilesSourceImpl.hpp"

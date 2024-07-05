@@ -1,10 +1,11 @@
 #include "Builder.hpp"
 #include "EventsImpl.hpp"
 #include "RenderImpl.hpp"
+#include "constants.hpp"
 
 namespace sfml {
     Builder::Builder() {
-        window = std::make_shared<sf::RenderWindow>(sf::VideoMode{1280u, 960u},
+        window = std::make_shared<sf::RenderWindow>(sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
                                                     "map-view");
     }
 

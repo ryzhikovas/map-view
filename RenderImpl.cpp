@@ -1,13 +1,16 @@
 #include "RenderImpl.hpp"
+
 namespace sfml {
     RenderImpl::RenderImpl(std::shared_ptr<sf::RenderWindow> window)
         : window(std::move(window)) {}
 
     void RenderImpl::draw(const Point<double>& topLeft,
                           const Point<double>& bottomRight,
-                          const TileData& tile) {
-        // TODO: реализовать отрисовку. Здесь придется подумать о системах
-        //  координат (мировой/экранной)
+                          const Tile& tile) {
+        sf::Sprite sprite;
+        tile.getSprite(sprite);
+        sprite.setPosition((float)topLeft.x, (float)topLeft.y);
+        window->draw(sprite);
     }
 
     void RenderImpl::clear() {

@@ -5,12 +5,17 @@
 
 namespace sfml {
     Builder::Builder() {
-        window = std::make_shared<sf::RenderWindow>(sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
-                                                    "map-view");
+        QMainWindow* MainFrame = new QMainWindow();
+        MainFrame->setWindowTitle("map-view");
+        MainFrame->resize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        window = std::make_shared<SFMLWidget>(MainFrame, QPoint(0, 0), QSize(WINDOW_WIDTH, WINDOW_HEIGHT),
+                                              std::make_shared<EventsImpl>());
+        MainFrame->setCentralWidget(window.get());
+        MainFrame->show();
     }
 
     std::shared_ptr<Events> Builder::events() {
-        return std::make_shared<EventsImpl>(window);
+        return ((SFMLWidget*)window.get())->events();
     }
 
     std::shared_ptr<Render> Builder::render() {

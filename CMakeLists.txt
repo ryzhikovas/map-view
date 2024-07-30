@@ -3,6 +3,12 @@ project(map-view)
 
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(freetype REQUIRED)
+include_directories(${FREETYPE_INCLUDE_DIRS})
+
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core REQUIRED)
+
 # Пытаемся найти предустановленный SFML
 find_package(SFML COMPONENTS graphics)
 
@@ -37,8 +43,18 @@ add_executable(map-view
         Geography.cpp
         Geography.hpp
         Location.hpp
+        BaseQtCanvas.cpp
+        BaseQtCanvas.hpp
+        SFMLWidget.cpp
+        SFMLWidget.hpp
 )
-target_link_libraries(map-view PRIVATE sfml-graphics)
+target_link_libraries(map-view PRIVATE
+        Freetype::Freetype
+        Qt5::Widgets
+        Qt5::Gui
+        Qt5::Core
+        Qt5::QWindowsIntegrationPlugin
+        sfml-graphics)
 
 target_compile_options(map-view PRIVATE
         $<$<CXX_COMPILER_ID:MSVC>:/W4>

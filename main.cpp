@@ -5,6 +5,12 @@
 #include "TilesSourceImpl.hpp"
 #include <iostream>
 #include <memory>
+#include <QApplication>
+
+#ifdef WIN32
+#include <QtPlugin>
+Q_IMPORT_PLUGIN(QWindowsIntegrationPlugin);
+#endif
 
 int main(int argc, char* argv[]) {
 
@@ -16,6 +22,8 @@ int main(int argc, char* argv[]) {
     try {
         auto tiles = std::dynamic_pointer_cast<TilesSource>(
             std::make_shared<TilesSourceImpl>(argv[1]));
+
+        QApplication app(argc, argv);
 
         sfml::Builder sfmlBuilder;
         auto events = sfmlBuilder.events();
@@ -43,9 +51,7 @@ int main(int argc, char* argv[]) {
             scene.resizeScene(width, height);
         });
 
-        while (events->fetch()) {
-            scene.show(*render);
-        }
+        return QApplication::exec();
     } catch (std::exception& ex) {
         std::cerr << ex.what() << std::endl;
         return 2;

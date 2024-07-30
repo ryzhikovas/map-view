@@ -74,8 +74,6 @@ void Scene::addTilesSource(std::shared_ptr<TilesSource> source) {
 }
 
 void Scene::show(Render& render) {
-    render.clear();
-
     auto drawTile = [this, &render] (Point<double> ptr) {
         Point<size_t> posTile = (floor(ptr / (double)TILE_SIZE)).convert<size_t>();
 
@@ -116,7 +114,5 @@ void Scene::show(Render& render) {
             drawTile(Point<double>{i,j});
         }
     }
-
-    render.display();
 }
 

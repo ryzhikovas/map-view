@@ -1,7 +1,10 @@
 #pragma once
 #include "Events.hpp"
 #include "Render.hpp"
+#include "BaseQtCanvas.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <QMainWindow>
+#include <QHBoxLayout>
 #include <memory>
 
 namespace sfml {
@@ -12,6 +15,6 @@ namespace sfml {
         std::shared_ptr<Render> render();
 
       private:
-        std::shared_ptr<sf::RenderWindow> window;
+        std::shared_ptr<BaseQtCanvas> window;
     };
 } // namespace sfml

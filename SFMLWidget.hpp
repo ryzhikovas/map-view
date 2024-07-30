@@ -11,7 +11,12 @@ class SFMLWidget : public BaseQtCanvas{
 
   private:
    void render() override;
+   void mousePressEvent(QMouseEvent *event) override;
+   void mouseReleaseEvent(QMouseEvent *event) override;
+   void mouseMoveEvent(QMouseEvent *event) override;
+   void wheelEvent(QWheelEvent *event) override;
+   void resizeEvent(QResizeEvent *event) override;
 
 
-    std::shared_ptr<Events> qtEvents;
+   std::shared_ptr<Events> qtEvents;
 };

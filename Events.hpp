@@ -6,6 +6,7 @@
 class Events {
   protected:
     using Pt = Point<double>;
+    using DrawCallback = std::function<void()>;
     using PosCallback = std::function<void(const Pt&)>;
     using WheelCallback = std::function<void(const Pt&, double step)>;
     using ChangeLocation = std::function<void(const Location& loc)>;
@@ -13,11 +14,13 @@ class Events {
 
   public:
     virtual ~Events() = default;
-    /**
-     * @bref Обработка событий кнопок мыши
-     * @return False при нажатии на кнопку закрытии программы
-     */
-    virtual bool fetch() = 0;
+    virtual void render() = 0;
+    virtual void mouseMove(const Pt&) = 0;
+    virtual void mouseDown(const Pt&) = 0;
+    virtual void mouseUp(const Pt&) = 0;
+    virtual void mouseWheel(const Pt&, double step) = 0;
+    virtual void resizing(unsigned width, unsigned height) = 0;
+    virtual void onRender(DrawCallback&& callback) = 0;
     /**
      * @bref Связывает функции с событием MouseMove
      * @param callback ссылка на std::function выполняемая при событии MouseMove

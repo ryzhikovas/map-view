@@ -31,6 +31,10 @@ int main(int argc, char* argv[]) {
         Scene scene(events);
         scene.addTilesSource(tiles);
 
+        events->onRender([&scene, render] () {
+            scene.show(*render);
+        });
+
         events->onMouseMove([&scene] (Point<double> pt) {
             scene.onOffset(pt);
         });

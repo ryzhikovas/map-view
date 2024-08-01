@@ -28,13 +28,17 @@ void SFMLWidget::mouseMoveEvent(QMouseEvent *event) {
 
 void SFMLWidget::wheelEvent(QWheelEvent *event) {
     int angle = event->angleDelta().y();
+    int step = abs(angle);
+    if (angle != 0) step /= angle;
     qtEvents->mouseWheel(Point<double>{(double)event->position().x(),
                                        (double)event->position().y()},
-                                        abs(angle) / angle);
+                                        step);
     BaseQtCanvas::wheelEvent(event);
 }
 
 void SFMLWidget::resizeEvent(QResizeEvent *event){
     qtEvents->resizing(event->size().width(), event->size().height());
-    //BaseQtCanvas::resizeEvent(event);
+    sf::RenderWindow::setSize(sf::Vector2((unsigned)event->size().width(),
+                                          (unsigned)event->size().height()));
+    BaseQtCanvas::resizeEvent(event);
 }

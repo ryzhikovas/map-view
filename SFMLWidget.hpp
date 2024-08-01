@@ -1,4 +1,6 @@
+#pragma once
 
+#include <SFML/System/Vector2.hpp>
 #include "BaseQtCanvas.hpp"
 #include "Events.hpp"
 

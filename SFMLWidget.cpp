@@ -38,7 +38,5 @@ void SFMLWidget::wheelEvent(QWheelEvent *event) {
 
 void SFMLWidget::resizeEvent(QResizeEvent *event){
     qtEvents->resizing(event->size().width(), event->size().height());
-    sf::RenderWindow::setSize(sf::Vector2((unsigned)event->size().width(),
-                                          (unsigned)event->size().height()));
     BaseQtCanvas::resizeEvent(event);
 }

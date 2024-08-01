@@ -54,5 +54,7 @@ void BaseQtCanvas::paintEvent(QPaintEvent*)
 void BaseQtCanvas::resizeEvent(QResizeEvent* event) {
     setView(sf::View(sf::FloatRect(0.f, 0.f,
                      event->size().width(), event->size().height())));
+    sf::RenderWindow::setSize(sf::Vector2((unsigned)event->size().width(),
+                                          (unsigned)event->size().height()));
     QWidget::resizeEvent(event);
 }
